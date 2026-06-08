@@ -1,8 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
-
-// TODO: replace with your ConvertKit/Kit form submit endpoint
-const CONVERTKIT_WEBHOOK_URL = "https://app.convertkit.com/forms/REPLACE_ME/subscriptions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -192,55 +188,18 @@ function Landing() {
 }
 
 function StickyMobileBar() {
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
-
-  const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-  async function onSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!isValid || status === "sending") return;
-    setStatus("sending");
-    try {
-      const form = new FormData();
-      form.append("email_address", email);
-      await fetch(CONVERTKIT_WEBHOOK_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: form,
-      });
-      // TODO: build /thank-you route
-      window.location.href = "/thank-you";
-    } catch {
-      setStatus("error");
-    }
-  }
-
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 md:hidden">
-      <form onSubmit={onSubmit} className="mx-auto flex max-w-5xl items-stretch gap-2 p-3">
-        <input
-          type="email"
-          inputMode="email"
-          autoComplete="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="your email"
-          aria-label="your email"
-          className="min-w-0 flex-1 bg-muted px-4 text-base text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent"
-          style={{ minHeight: 48 }}
-        />
-        <button
-          type="submit"
-          disabled={!isValid || status === "sending"}
-          className="cta group inline-flex items-center justify-center gap-2 bg-accent px-4 text-xs font-bold uppercase tracking-wider text-accent-foreground transition-colors hover:bg-accent/90 disabled:opacity-50"
+      <div className="mx-auto max-w-5xl p-3">
+        <a
+          href="/quiz"
+          className="cta group flex w-full items-center justify-center gap-3 bg-accent px-6 py-4 text-sm font-bold uppercase tracking-wider text-accent-foreground transition-colors hover:bg-accent/90"
           style={{ minHeight: 48 }}
         >
-          <span>{status === "sending" ? "sending" : "send results"}</span>
+          <span>start the diagnostic</span>
           <span aria-hidden="true" className="cta-arrow">→</span>
-        </button>
-      </form>
+        </a>
+      </div>
     </div>
   );
 }

@@ -1,3 +1,6 @@
+// TODO: replace with your ConvertKit/Kit form submit endpoint
+export const CONVERTKIT_WEBHOOK_URL = "https://app.convertkit.com/forms/REPLACE_ME/subscriptions";
+
 export type DepletionType = "ghost" | "engine" | "bouncer" | "sleeper";
 
 export interface QuizOption {
