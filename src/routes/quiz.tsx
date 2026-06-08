@@ -1,15 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import {
+  CONVERTKIT_WEBHOOK_URL,
   QUESTIONS,
   RESULTS,
   computeResult,
   computeScores,
   type DepletionType,
 } from "@/lib/quiz-data";
-
-// TODO: replace with your ConvertKit/Kit form submit endpoint
-const CONVERTKIT_WEBHOOK_URL = "https://app.convertkit.com/forms/REPLACE_ME/subscriptions";
 
 export const Route = createFileRoute("/quiz")({
   head: () => ({
@@ -53,7 +51,6 @@ function QuizRoute() {
 
   const goBack = useCallback(() => {
     setStep((s) => {
-      if (s === "result") return "email";
       if (s === "email") return QUESTIONS.length - 1;
       if (typeof s === "number" && s > 0) return s - 1;
       return s;
