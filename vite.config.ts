@@ -12,4 +12,17 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Force nitro on with the Vercel preset so `vite build` emits a `.vercel/output`
+  // Build Output API (v3) bundle that Vercel deploys directly (SSR via serverless functions).
+  // The output dirs are overridden because the shared config otherwise defaults to a
+  // `dist/server` + `dist/client` layout (intended for the Cloudflare preset), which the
+  // Vercel preset cannot consume.
+  nitro: {
+    preset: "vercel",
+    output: {
+      dir: ".vercel/output",
+      serverDir: ".vercel/output/functions/__server.func",
+      publicDir: ".vercel/output/static",
+    },
+  },
 });
