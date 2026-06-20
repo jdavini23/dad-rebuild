@@ -79,7 +79,7 @@ function Landing() {
           <div className="rise rise-4 mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
             <PrimaryCTA className="w-full sm:w-auto">start the diagnostic</PrimaryCTA>
             <span className="text-sm text-muted-foreground sm:ml-4">
-              free. no credit card. 12 questions.
+              free. no credit card. 11 questions.
             </span>
           </div>
         </div>
@@ -120,7 +120,7 @@ function Landing() {
           <div className="mt-10 space-y-5 text-xl leading-snug text-foreground/90 sm:text-2xl">
             <p>most dad advice is written for moms or by therapists.</p>
             <p className="text-accent">this isn't that.</p>
-            <p>12 questions. 4 archetypes. one plan built for the dad you actually are right now.</p>
+            <p>11 questions. 4 archetypes. one plan built for the dad you actually are right now.</p>
             <p>no journaling. no "fill your cup." no inner child work.</p>
             <p>just a diagnosis and a 14-day protocol you can run starting tomorrow morning.</p>
           </div>

@@ -3,9 +3,13 @@ export const CONVERTKIT_WEBHOOK_URL = "https://app.convertkit.com/forms/REPLACE_
 
 export type DepletionType = "ghost" | "engine" | "bouncer" | "sleeper";
 
+// "managing" options score 0. They never produce a result type; they only
+// pull the severity total down (fewer managing picks means a higher score).
+export type OptionType = DepletionType | "managing";
+
 export interface QuizOption {
   label: string;
-  type: DepletionType;
+  type: OptionType;
   points: number;
 }
 
@@ -16,121 +20,133 @@ export interface QuizQuestion {
 
 export const QUESTIONS: QuizQuestion[] = [
   {
-    prompt:
-      "it's 7am on a workday. before you've even had coffee, how do you feel about the day ahead?",
+    prompt: "the drive or walk home from work. what's actually running in your head?",
     options: [
-      { label: "honestly nothing. you just move.", type: "ghost", points: 2 },
-      { label: "already running the to-do list in your head.", type: "engine", points: 2 },
-      { label: "tense. like one wrong thing will set you off.", type: "bouncer", points: 2 },
-      { label: "wrecked. you didn't sleep and the day hasn't started.", type: "sleeper", points: 2 },
+      { label: "still working the problems. you never really clock out.", type: "engine", points: 3 },
+      { label: "nothing. blank. just get there and get through it.", type: "ghost", points: 3 },
+      {
+        label: "already bracing for the noise and the asks before you're even inside.",
+        type: "bouncer",
+        points: 3,
+      },
+      { label: "counting the hours until you can lie down.", type: "sleeper", points: 3 },
+      { label: "you wind down on the way and walk in steady.", type: "managing", points: 0 },
     ],
   },
   {
-    prompt:
-      "your kid asks you to play for the tenth time today. what actually happens inside you?",
+    prompt: "your kid asks you to play for the tenth time today. what happens inside you?",
     options: [
-      { label: "you say yes but you're not really there.", type: "ghost", points: 2 },
+      { label: "you say yes, but you're somewhere else the whole time.", type: "ghost", points: 2 },
       {
-        label: "you calculate how it fits around everything else you have to do.",
+        label: "you're already calculating what it costs you on everything else.",
         type: "engine",
         points: 2,
       },
-      { label: "you feel the snap coming and have to swallow it.", type: "bouncer", points: 3 },
-      { label: "you want to but there's nothing left in the tank.", type: "sleeper", points: 2 },
+      { label: "you feel the snap rising and swallow it.", type: "bouncer", points: 3 },
+      { label: "you want to, but the tank is empty.", type: "sleeper", points: 2 },
+      { label: "you drop in and actually play.", type: "managing", points: 0 },
     ],
   },
   {
-    prompt: "when's the last time you felt like yourself?",
+    prompt: "your kid has a full meltdown in public. your honest first reaction?",
     options: [
-      { label: "can't remember. that guy feels gone.", type: "ghost", points: 3 },
-      { label: "i don't have time to think about that.", type: "engine", points: 2 },
-      { label: "when i'm not on edge, which is rare.", type: "bouncer", points: 1 },
-      { label: "when i was rested, so a while ago.", type: "sleeper", points: 2 },
+      { label: "heat shoots up. you're one breath from losing it.", type: "bouncer", points: 3 },
+      { label: "you go cold and handle it like a machine.", type: "ghost", points: 2 },
+      { label: "mostly you're annoyed it's eating time you don't have.", type: "engine", points: 2 },
+      { label: "you're too wiped to react. you just want it to stop.", type: "sleeper", points: 2 },
+      { label: "you stay steady and work the problem.", type: "managing", points: 0 },
     ],
   },
   {
-    prompt: "it's 9pm, kids are down. what do you do?",
+    prompt: "kids are finally down, it's 9pm. what do you actually do?",
     options: [
-      { label: "scroll on the couch and feel nothing.", type: "ghost", points: 2 },
-      { label: "more work. there's always more.", type: "engine", points: 3 },
-      { label: "decompress hard because you held it together all day.", type: "bouncer", points: 2 },
-      { label: "pass out, or fight to stay awake.", type: "sleeper", points: 2 },
+      { label: "scroll the couch and feel basically nothing.", type: "ghost", points: 3 },
+      { label: "back to work, or the side project. there's always more.", type: "engine", points: 3 },
+      { label: "decompress hard. you white-knuckled it all day.", type: "bouncer", points: 2 },
+      { label: "fight to stay awake, or you're already gone.", type: "sleeper", points: 3 },
+      { label: "something that's actually yours, and you enjoy it.", type: "managing", points: 0 },
     ],
   },
   {
-    prompt: "how's your body feeling lately?",
+    prompt: "think about your body right now. what's the read?",
     options: [
-      { label: "don't really notice it anymore.", type: "ghost", points: 2 },
-      { label: "ignoring it. no time.", type: "engine", points: 2 },
-      { label: "tight. jaw, shoulders, like you're braced.", type: "bouncer", points: 2 },
-      { label: "heavy and tired no matter how much you rest.", type: "sleeper", points: 3 },
+      { label: "you've stopped noticing it.", type: "ghost", points: 2 },
+      { label: "you're ignoring it. no time to deal with it.", type: "engine", points: 2 },
+      { label: "tight everywhere. jaw, shoulders, braced for impact.", type: "bouncer", points: 3 },
+      { label: "heavy and drained no matter how much you sleep.", type: "sleeper", points: 3 },
+      { label: "decent. you move, you feel it working.", type: "managing", points: 0 },
     ],
   },
   {
-    prompt: "your partner asks how you're doing. real answer?",
+    prompt: "the last few weeks of sleep. the truth?",
     options: [
-      { label: "\"fine.\" you don't even know anymore.", type: "ghost", points: 3 },
-      { label: "\"busy.\" always busy.", type: "engine", points: 2 },
-      { label: "\"don't ask right now.\"", type: "bouncer", points: 2 },
-      { label: "\"exhausted.\"", type: "sleeper", points: 2 },
-    ],
-  },
-  {
-    prompt: "what's the thing you feel most guilty about as a dad?",
-    options: [
+      { label: "you sleep, but wake up just as empty.", type: "ghost", points: 2 },
+      { label: "you'd sleep if your brain would stop running.", type: "engine", points: 2 },
+      { label: "you lie there wired and tense.", type: "bouncer", points: 2 },
       {
-        label: "that you're not really present even when you're home.",
-        type: "ghost",
+        label: "you stay up too late for the only time that feels like yours, then pay for it.",
+        type: "sleeper",
         points: 3,
       },
-      { label: "that you're always working instead of being there.", type: "engine", points: 2 },
-      { label: "that you lose it with them.", type: "bouncer", points: 3 },
-      { label: "that you're too tired to show up the way you want.", type: "sleeper", points: 2 },
+      { label: "you sleep fine and wake up okay.", type: "managing", points: 0 },
     ],
   },
   {
-    prompt: "someone cuts you off in traffic with the kids in the car. you…",
+    prompt: "your partner asks how you're really doing. the answer you don't say out loud?",
     options: [
-      { label: "barely register it.", type: "ghost", points: 2 },
-      { label: "annoyed, but already thinking about the next thing.", type: "engine", points: 1 },
-      { label: "react hard. maybe too hard.", type: "bouncer", points: 3 },
-      { label: "too drained to care.", type: "sleeper", points: 1 },
+      { label: "\"i don't know anymore.\"", type: "ghost", points: 3 },
+      { label: "\"i can't stop, or it all falls apart.\"", type: "engine", points: 3 },
+      { label: "\"don't poke me right now.\"", type: "bouncer", points: 3 },
+      { label: "\"i'm so tired i can't think.\"", type: "sleeper", points: 3 },
+      { label: "\"i'm good, actually.\" and you mean it.", type: "managing", points: 0 },
     ],
   },
   {
-    prompt: "when do you feel most like a machine instead of a person?",
+    prompt: "the thing you feel worst about as a Dad, the one that finds you at night.",
     options: [
-      { label: "all the time. it's like nobody's home.", type: "ghost", points: 2 },
-      { label: "every day. you just produce.", type: "engine", points: 3 },
-      { label: "when you're holding back what you actually feel.", type: "bouncer", points: 2 },
-      { label: "when you're pushing through on no sleep.", type: "sleeper", points: 2 },
+      { label: "that you're physically there, but they're not getting you.", type: "ghost", points: 3 },
+      { label: "that you're always working instead of with them.", type: "engine", points: 3 },
+      { label: "that you lose it with the people you'd die for.", type: "bouncer", points: 3 },
+      { label: "that you're too drained to be who they need.", type: "sleeper", points: 3 },
     ],
   },
   {
-    prompt: "what would actually help you most right now?",
+    prompt: "the last time you did something purely because you wanted to?",
     options: [
-      { label: "feeling something again.", type: "ghost", points: 3 },
-      { label: "an extra set of hands so you could stop.", type: "engine", points: 2 },
-      { label: "not snapping at the people you love.", type: "bouncer", points: 3 },
-      { label: "a full night of sleep.", type: "sleeper", points: 3 },
+      { label: "you can't think of what that would even be.", type: "ghost", points: 3 },
+      { label: "can't justify it. feels selfish with everything undone.", type: "engine", points: 3 },
+      { label: "you tried, but you were too wound up to enjoy it.", type: "bouncer", points: 2 },
+      { label: "you'd pick sleep over it every time.", type: "sleeper", points: 2 },
+      { label: "recently. you protect that time.", type: "managing", points: 0 },
     ],
   },
   {
-    prompt: "how often do you do something just for you?",
+    prompt:
+      "picture this exact version of you a year from now, nothing changed. what's the feeling?",
     options: [
-      { label: "you don't even know what that would be anymore.", type: "ghost", points: 3 },
-      { label: "never. it feels selfish.", type: "engine", points: 2 },
-      { label: "rarely, and you're too wound up to enjoy it.", type: "bouncer", points: 1 },
-      { label: "rarely. you'd rather sleep.", type: "sleeper", points: 2 },
+      { label: "a stranger. you won't know that guy at all.", type: "ghost", points: 3 },
+      {
+        label: "fine, as long as you're still producing. and that's the scary part.",
+        type: "engine",
+        points: 3,
+      },
+      { label: "dread. you'll have worn down the people at home by then.", type: "bouncer", points: 3 },
+      { label: "you can't even picture it. too tired to think that far out.", type: "sleeper", points: 2 },
+      { label: "steady. you're on a path you believe in.", type: "managing", points: 0 },
     ],
   },
   {
-    prompt: "finish this sentence: \"i'm running on…\"",
+    prompt: "you get one free hour. nobody needs you, no obligations. what happens?",
     options: [
-      { label: "autopilot.", type: "ghost", points: 3 },
-      { label: "momentum. if you stop you collapse.", type: "engine", points: 3 },
-      { label: "a short fuse.", type: "bouncer", points: 3 },
-      { label: "empty.", type: "sleeper", points: 3 },
+      {
+        label: "you reach for your phone and look up an hour later, not sure where it went.",
+        type: "ghost",
+        points: 2,
+      },
+      { label: "you fill it with something productive without thinking.", type: "engine", points: 3 },
+      { label: "you can't settle. restless, on edge.", type: "bouncer", points: 2 },
+      { label: "you sleep, or wish you could.", type: "sleeper", points: 3 },
+      { label: "you do something that fills you back up.", type: "managing", points: 0 },
     ],
   },
 ];
@@ -146,10 +162,10 @@ export interface ResultContent {
 
 export const RESULTS: Record<DepletionType, ResultContent> = {
   ghost: {
-    name: "THE GHOST",
+    name: "the Ghost",
     headline: "you're here, but you're not.",
     whatsHappening:
-      "identity depletion. you've given so much for so long there's no \"you\" left under the dad, the worker, the provider. you're not angry. you're not even sad. you're just gone. autopilot got you through, and now autopilot is all you've got.",
+      "identity depletion. you've given so much for so long there's no \"you\" left under the Dad, the worker, the provider. you're not angry. you're not even sad. you're just gone. autopilot got you through, and now autopilot is all you've got.",
     mistake:
       "waiting to \"feel like\" doing something before you do it. the feeling comes back after you act, not before. you're waiting for a signal that won't show up on its own.",
     protocol: [
@@ -160,7 +176,7 @@ export const RESULTS: Record<DepletionType, ResultContent> = {
     shareLine: "i'm a ghost. what'd you get?",
   },
   engine: {
-    name: "THE ENGINE",
+    name: "the Engine",
     headline: "you never stop, and that's the problem.",
     whatsHappening:
       "output depletion. you turned yourself into a productivity machine. your worth got tied to tasks done, and now stopping feels like failing. but engines that never cool down seize up. you're not heading for burnout someday. you're in it. you just move fast enough to outrun the feeling.",
@@ -174,7 +190,7 @@ export const RESULTS: Record<DepletionType, ResultContent> = {
     shareLine: "i'm an engine. what'd you get?",
   },
   bouncer: {
-    name: "THE BOUNCER",
+    name: "the Bouncer",
     headline: "you're on a hair trigger and you hate it.",
     whatsHappening:
       "regulation depletion. you spend the whole day holding it together, and by the time you're home the tank that controls your reactions is empty. so you snap. then you feel like garbage. then you swear you won't again, and you do. it's not a character flaw. it's a depleted system with no margin left.",
@@ -188,10 +204,10 @@ export const RESULTS: Record<DepletionType, ResultContent> = {
     shareLine: "i'm a bouncer. what'd you get?",
   },
   sleeper: {
-    name: "THE SLEEPER",
+    name: "the Sleeper",
     headline: "you're running on empty and pretending you're not.",
     whatsHappening:
-      "physical depletion. the most basic system is offline. you're not getting real rest, so everything else, your patience, your focus, your body, your mood, runs on fumes. you've normalized exhaustion until you think this is just what being a dad feels like. it's not. you're depleted at the root.",
+      "physical depletion. the most basic system is offline. you're not getting real rest, so everything else, your patience, your focus, your body, your mood, runs on fumes. you've normalized exhaustion until you think this is just what being a Dad feels like. it's not. you're depleted at the root.",
     mistake:
       "stealing from sleep to get \"you time\" at night, then wondering why tomorrow is worse. the late-night scroll isn't rest. it's a withdrawal you pay for at 7am.",
     protocol: [
@@ -214,12 +230,51 @@ export function computeScores(answers: (number | undefined)[]): Scores {
   answers.forEach((idx, qi) => {
     if (idx === undefined) return;
     const opt = QUESTIONS[qi]?.options[idx];
-    if (opt) scores[opt.type] += opt.points;
+    if (opt && opt.type !== "managing") scores[opt.type] += opt.points;
   });
   return scores;
 }
 
-export function computeResult(scores: Scores): DepletionType {
-  const max = Math.max(...TIEBREAK_PRIORITY.map((t) => scores[t]));
-  return TIEBREAK_PRIORITY.find((t) => scores[t] === max) ?? "ghost";
+// how many questions each type was actually picked in (managing excluded).
+// used as the first tiebreak when two types tie on points.
+export function computeCounts(answers: (number | undefined)[]): Scores {
+  const counts = emptyScores();
+  answers.forEach((idx, qi) => {
+    if (idx === undefined) return;
+    const opt = QUESTIONS[qi]?.options[idx];
+    if (opt && opt.type !== "managing") counts[opt.type] += 1;
+  });
+  return counts;
+}
+
+export function computeResult(scores: Scores, counts: Scores): DepletionType {
+  const maxPoints = Math.max(...TIEBREAK_PRIORITY.map((t) => scores[t]));
+  let candidates = TIEBREAK_PRIORITY.filter((t) => scores[t] === maxPoints);
+  // first tiebreak: the type the Dad selected most often.
+  if (candidates.length > 1) {
+    const maxCount = Math.max(...candidates.map((t) => counts[t]));
+    candidates = candidates.filter((t) => counts[t] === maxCount);
+  }
+  // final tiebreak: fixed priority order (TIEBREAK_PRIORITY is already in order).
+  return TIEBREAK_PRIORITY.find((t) => candidates.includes(t)) ?? "ghost";
+}
+
+// total type points across all answers (managing scores 0, so it just lowers
+// the total). drives the severity read.
+export function computeSeverity(scores: Scores): number {
+  return scores.ghost + scores.engine + scores.bouncer + scores.sleeper;
+}
+
+export type SeverityId = "running-low" | "depleted" | "running-on-empty";
+
+export interface SeverityBand {
+  id: SeverityId;
+  label: string;
+}
+
+// starting bands, calibrate against real responses.
+export function severityBand(total: number): SeverityBand {
+  if (total >= 23) return { id: "running-on-empty", label: "running on empty" };
+  if (total >= 14) return { id: "depleted", label: "depleted" };
+  return { id: "running-low", label: "running low" };
 }
