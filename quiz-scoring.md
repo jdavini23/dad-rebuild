@@ -1,60 +1,74 @@
-# The Depleted Dad Diagnostic — Scoring & Results
+# The Depleted Dad Diagnostic — Scoring & Results (v2.1)
 
 Source: `src/lib/quiz-data.ts`
 
 ## How scoring works
 
-1. **Tally points.** Every answer adds its point value to one of four depletion types: `ghost`, `engine`, `bouncer`, `sleeper`. (Points per option are listed in `quiz-questions.md`.)
-2. **Highest total wins.** The depletion type with the most accumulated points is the result.
-3. **Tiebreak.** If two or more types tie for the highest score, the winner is chosen by this fixed priority order:
+There are two outputs: a **type** (which depletion archetype) and a **severity** (how deep it runs).
 
-   ```
-   bouncer  >  ghost  >  sleeper  >  engine
-   ```
+### Type
 
-   (i.e. `bouncer` beats everything, `engine` only wins outright.)
+1. **Tally points.** Every answer adds its point value to one of four depletion types: `ghost`, `engine`, `bouncer`, `sleeper`. The `managing` option scores 0 and is never a result type. (Points per option are in `quiz-questions.md`.)
+2. **Highest total wins.**
+3. **Tiebreak, in order:**
+   1. **Most-selected type** — among the types tied on points, the one the Dad picked in the most questions.
+   2. **Priority order** — if still tied: `bouncer > ghost > sleeper > engine`.
+
+### Severity
+
+**Sum all type points across the 11 answers.** Fewer `managing` picks means a higher total. Bands (starting values, calibrate against real responses):
+
+| Band | Total | Use |
+| --- | --- | --- |
+| running low | 0–13 | real but early. lightest-touch result and offer. |
+| depleted | 14–22 | the core case. standard result and offer. |
+| running on empty | 23+ | crisis range. hardest-hitting result, strongest offer. |
+
+The result screen shows the band as a subtle "depletion level: …" line, and the band id is sent to the email webhook as `fields[severity]`.
 
 ### Reference logic
 
 ```ts
 const TIEBREAK_PRIORITY = ["bouncer", "ghost", "sleeper", "engine"];
 
-function computeScores(answers) {
-  const scores = { ghost: 0, engine: 0, bouncer: 0, sleeper: 0 };
-  answers.forEach((idx, qi) => {
-    const opt = QUESTIONS[qi]?.options[idx];
-    if (opt) scores[opt.type] += opt.points;
-  });
-  return scores;
+function computeResult(scores, counts) {
+  const maxPoints = Math.max(...TIEBREAK_PRIORITY.map((t) => scores[t]));
+  let candidates = TIEBREAK_PRIORITY.filter((t) => scores[t] === maxPoints);
+  if (candidates.length > 1) {
+    const maxCount = Math.max(...candidates.map((t) => counts[t]));
+    candidates = candidates.filter((t) => counts[t] === maxCount);
+  }
+  return TIEBREAK_PRIORITY.find((t) => candidates.includes(t)) ?? "ghost";
 }
 
-function computeResult(scores) {
-  const max = Math.max(...TIEBREAK_PRIORITY.map((t) => scores[t]));
-  return TIEBREAK_PRIORITY.find((t) => scores[t] === max) ?? "ghost";
+function severityBand(total) {
+  if (total >= 23) return { id: "running-on-empty", label: "running on empty" };
+  if (total >= 14) return { id: "depleted", label: "depleted" };
+  return { id: "running-low", label: "running low" };
 }
 ```
 
-### Max possible points per type
+### Max points per type (verified)
 
-Summing every option of each type across the 12 questions:
+If a single type were picked on every question:
 
 | Type | Max points | Depletion |
 | --- | --- | --- |
-| ghost | 30 | identity depletion |
-| engine | 26 | output depletion |
-| bouncer | 27 | regulation depletion |
-| sleeper | 27 | physical depletion |
+| ghost | 28 | identity depletion |
+| engine | 29 | output depletion |
+| bouncer | 29 | regulation depletion |
+| sleeper | 29 | physical depletion |
 
-(In a real run only one option per question is chosen, so actual totals are far lower — these are theoretical ceilings if a single type were picked every time.)
+All within a single point, so no type is materially advantaged. (The v2.1 spec listed bouncer and sleeper at 28; the actual ceilings are 29 each.)
 
 ---
 
 ## Results
 
-### THE GHOST — identity depletion
+### the Ghost — identity depletion
 **Headline:** you're here, but you're not.
 
-**What's happening:** identity depletion. you've given so much for so long there's no "you" left under the dad, the worker, the provider. you're not angry. you're not even sad. you're just gone. autopilot got you through, and now autopilot is all you've got.
+**What's happening:** identity depletion. you've given so much for so long there's no "you" left under the Dad, the worker, the provider. you're not angry. you're not even sad. you're just gone. autopilot got you through, and now autopilot is all you've got.
 
 **The #1 mistake:** waiting to "feel like" doing something before you do it. the feeling comes back after you act, not before. you're waiting for a signal that won't show up on its own.
 
@@ -67,7 +81,7 @@ Summing every option of each type across the 12 questions:
 
 ---
 
-### THE ENGINE — output depletion
+### the Engine — output depletion
 **Headline:** you never stop, and that's the problem.
 
 **What's happening:** output depletion. you turned yourself into a productivity machine. your worth got tied to tasks done, and now stopping feels like failing. but engines that never cool down seize up. you're not heading for burnout someday. you're in it. you just move fast enough to outrun the feeling.
@@ -83,7 +97,7 @@ Summing every option of each type across the 12 questions:
 
 ---
 
-### THE BOUNCER — regulation depletion
+### the Bouncer — regulation depletion
 **Headline:** you're on a hair trigger and you hate it.
 
 **What's happening:** regulation depletion. you spend the whole day holding it together, and by the time you're home the tank that controls your reactions is empty. so you snap. then you feel like garbage. then you swear you won't again, and you do. it's not a character flaw. it's a depleted system with no margin left.
@@ -99,10 +113,10 @@ Summing every option of each type across the 12 questions:
 
 ---
 
-### THE SLEEPER — physical depletion
+### the Sleeper — physical depletion
 **Headline:** you're running on empty and pretending you're not.
 
-**What's happening:** physical depletion. the most basic system is offline. you're not getting real rest, so everything else, your patience, your focus, your body, your mood, runs on fumes. you've normalized exhaustion until you think this is just what being a dad feels like. it's not. you're depleted at the root.
+**What's happening:** physical depletion. the most basic system is offline. you're not getting real rest, so everything else, your patience, your focus, your body, your mood, runs on fumes. you've normalized exhaustion until you think this is just what being a Dad feels like. it's not. you're depleted at the root.
 
 **The #1 mistake:** stealing from sleep to get "you time" at night, then wondering why tomorrow is worse. the late-night scroll isn't rest. it's a withdrawal you pay for at 7am.
 

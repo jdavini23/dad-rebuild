@@ -4,9 +4,13 @@ import {
   CONVERTKIT_WEBHOOK_URL,
   QUESTIONS,
   RESULTS,
+  computeCounts,
   computeResult,
   computeScores,
+  computeSeverity,
+  severityBand,
   type DepletionType,
+  type SeverityBand,
 } from "@/lib/quiz-data";
 
 export const Route = createFileRoute("/quiz")({
@@ -15,7 +19,7 @@ export const Route = createFileRoute("/quiz")({
       { title: "take the diagnostic — depleted dad diagnostic" },
       {
         name: "description",
-        content: "12 questions. 3 minutes. find your depletion type.",
+        content: "11 questions. 3 minutes. find your depletion type.",
       },
       { name: "robots", content: "noindex" },
       { name: "theme-color", content: "#0A0A0A" },
@@ -35,6 +39,7 @@ function QuizRoute() {
   const [email, setEmail] = useState("");
   const [submitStatus, setSubmitStatus] = useState<"idle" | "sending" | "error">("idle");
   const [resultType, setResultType] = useState<DepletionType | null>(null);
+  const [band, setBand] = useState<SeverityBand | null>(null);
 
   const selectAnswer = useCallback(
     (qi: number, optionIndex: number) => {
@@ -57,12 +62,13 @@ function QuizRoute() {
     });
   }, []);
 
-  // keyboard 1..4 for question screens
+  // keyboard number keys for question screens (one per option, up to 5)
   useEffect(() => {
     if (typeof step !== "number") return;
+    const count = QUESTIONS[step].options.length;
     const handler = (e: KeyboardEvent) => {
       const n = parseInt(e.key, 10);
-      if (n >= 1 && n <= 4) selectAnswer(step, n - 1);
+      if (n >= 1 && n <= count) selectAnswer(step, n - 1);
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
@@ -73,6 +79,7 @@ function QuizRoute() {
     setEmail("");
     setSubmitStatus("idle");
     setResultType(null);
+    setBand(null);
     setStep(0);
   };
 
@@ -82,11 +89,14 @@ function QuizRoute() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
     setSubmitStatus("sending");
     const scores = computeScores(answers);
-    const type = computeResult(scores);
+    const counts = computeCounts(answers);
+    const type = computeResult(scores, counts);
+    const resultBand = severityBand(computeSeverity(scores));
     try {
       const form = new FormData();
       form.append("email_address", email);
       form.append("fields[depletion_type]", type);
+      form.append("fields[severity]", resultBand.id);
       await fetch(CONVERTKIT_WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
@@ -96,6 +106,7 @@ function QuizRoute() {
       // we still show the result on screen even if the webhook fails
     }
     setResultType(type);
+    setBand(resultBand);
     setStep("result");
     setSubmitStatus("idle");
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
@@ -137,7 +148,7 @@ function QuizRoute() {
         )}
 
         {step === "result" && resultType && (
-          <ResultScreen key={`r-${resultType}`} type={resultType} onRetake={reset} />
+          <ResultScreen key={`r-${resultType}`} type={resultType} band={band} onRetake={reset} />
         )}
       </div>
     </main>
@@ -313,7 +324,15 @@ function EmailScreen({
   );
 }
 
-function ResultScreen({ type, onRetake }: { type: DepletionType; onRetake: () => void }) {
+function ResultScreen({
+  type,
+  band,
+  onRetake,
+}: {
+  type: DepletionType;
+  band: SeverityBand | null;
+  onRetake: () => void;
+}) {
   const r = RESULTS[type];
   const [copied, setCopied] = useState(false);
 
@@ -341,6 +360,11 @@ function ResultScreen({ type, onRetake }: { type: DepletionType; onRetake: () =>
       >
         {r.headline}
       </p>
+      {band && (
+        <p className="rise rise-3 mt-5 text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
+          depletion level: <span className="text-accent">{band.label}</span>
+        </p>
+      )}
 
       <div className="rise rise-4 mt-12 space-y-12">
         <Block label="what's happening">
