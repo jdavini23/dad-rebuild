@@ -1,25 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
-import {
-  CONVERTKIT_WEBHOOK_URL,
-  QUESTIONS,
-  RESULTS,
-  computeCounts,
-  computeResult,
-  computeScores,
-  computeSeverity,
-  severityBand,
-  type DepletionType,
-  type SeverityBand,
-} from "@/lib/quiz-data";
-
-export const Route = createFileRoute("/quiz")({
-  head: () => ({
-    meta: [
-      { title: "take the diagnostic — depleted dad diagnostic" },
-      {
-        name: "description",
         content: "11 questions. 3 minutes. find your depletion type.",
+        content: "eleven questions. 3 minutes. find your depletion type.",
       },
       { name: "robots", content: "noindex" },
       { name: "theme-color", content: "#0A0A0A" },
