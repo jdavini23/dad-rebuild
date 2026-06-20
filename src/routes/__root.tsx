@@ -89,7 +89,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href:
           "data:image/svg+xml;utf8," +
           encodeURIComponent(
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%230A0A0A"/><text x="50%" y="55%" text-anchor="middle" dominant-baseline="middle" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="20" fill="%23FF5B1F">D</text></svg>'.replaceAll("%23", "#"),
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="%23fafafa"/><text x="50%" y="55%" text-anchor="middle" dominant-baseline="middle" font-family="Geist,sans-serif" font-weight="600" font-size="20" fill="%23171717">D</text></svg>'.replaceAll("%23", "#"),
           ),
       },
     ],

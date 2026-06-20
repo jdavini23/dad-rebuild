@@ -22,7 +22,7 @@ export const Route = createFileRoute("/quiz")({
         content: "eleven questions. 3 minutes. find your depletion type.",
       },
       { name: "robots", content: "noindex" },
-      { name: "theme-color", content: "#0A0A0A" },
+      { name: "theme-color", content: "#fafafa" },
     ],
     links: [{ rel: "canonical", href: "/quiz" }],
   }),
@@ -178,12 +178,12 @@ function QuizHeader({
       <div className="mx-auto flex max-w-2xl items-center justify-between px-5 py-4 sm:px-8">
         <Link
           to="/"
-          className="text-xs font-bold uppercase tracking-[0.2em] text-foreground"
+          className="font-mono text-xs uppercase tracking-[0.12em] text-foreground"
           aria-label="back to home"
         >
           DDD<span className="text-accent">.</span>
         </Link>
-        <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">{label}</span>
+        <span className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">{label}</span>
       </div>
       <div className="h-px w-full bg-border">
         <div
@@ -196,7 +196,7 @@ function QuizHeader({
           <button
             type="button"
             onClick={onBack}
-            className="text-xs uppercase tracking-[0.2em] text-muted-foreground transition-colors hover:text-foreground"
+            className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
           >
             ← back
           </button>
@@ -218,11 +218,11 @@ function QuestionScreen({
   const q = QUESTIONS[index];
   return (
     <section>
-      <p className="rise rise-1 text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
+      <p className="rise rise-1 font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
         question {index + 1} of {QUESTIONS.length}
       </p>
       <h1
-        className="rise rise-2 mt-6 text-2xl font-bold leading-[1.15] tracking-tight sm:text-4xl"
+        className="rise rise-2 mt-6 text-2xl font-semibold leading-[1.15] tracking-[-0.02em] sm:text-4xl"
         style={{ textWrap: "balance" } as React.CSSProperties}
       >
         {q.prompt}
@@ -236,16 +236,16 @@ function QuestionScreen({
               <button
                 type="button"
                 onClick={() => onSelect(i)}
-                className={`group flex w-full items-start gap-4 border px-5 py-5 text-left transition-colors sm:px-6 sm:py-6 ${
+                className={`group flex w-full items-start gap-4 rounded-md border px-5 py-5 text-left transition-colors sm:px-6 sm:py-6 ${
                   isSelected
-                    ? "border-accent bg-accent/10"
-                    : "border-border hover:border-accent hover:bg-muted"
+                    ? "border-accent bg-accent/[0.04]"
+                    : "border-border hover:border-foreground hover:bg-muted"
                 }`}
                 style={{ minHeight: 72 }}
               >
                 <span
                   aria-hidden="true"
-                  className={`mt-0.5 inline-block text-xs font-bold uppercase tracking-[0.2em] ${
+                  className={`mt-0.5 inline-block font-mono text-xs uppercase tracking-[0.12em] ${
                     isSelected ? "text-accent" : "text-muted-foreground group-hover:text-accent"
                   }`}
                 >
@@ -260,7 +260,7 @@ function QuestionScreen({
         })}
       </ul>
 
-      <p className="mt-8 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+      <p className="mt-8 font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
         tap to continue
       </p>
     </section>
@@ -281,10 +281,10 @@ function EmailScreen({
   const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   return (
     <section>
-      <p className="rise rise-1 text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
+      <p className="rise rise-1 font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
         your results are ready
       </p>
-      <h1 className="rise rise-2 mt-6 text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
+      <h1 className="rise rise-2 mt-6 text-3xl font-semibold leading-tight tracking-[-0.025em] sm:text-5xl">
         where should we send your 14-day protocol?
       </h1>
       <p className="rise rise-3 mt-6 text-base text-muted-foreground sm:text-lg">
@@ -302,13 +302,13 @@ function EmailScreen({
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your email"
           aria-label="your email"
-          className="w-full border border-border bg-muted px-5 text-base text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none"
+          className="w-full rounded-md border border-border bg-card px-5 text-base text-foreground placeholder:text-muted-foreground focus:border-foreground focus:outline-none"
           style={{ minHeight: 56 }}
         />
         <button
           type="submit"
           disabled={!isValid || status === "sending"}
-          className="cta group inline-flex w-full items-center justify-center gap-3 bg-accent px-8 py-5 text-base font-bold uppercase tracking-wider text-accent-foreground transition-colors hover:bg-accent/90 disabled:opacity-50"
+          className="cta group inline-flex w-full items-center justify-center gap-3 bg-accent px-8 py-5 text-base font-medium text-accent-foreground transition-colors hover:bg-accent/90 disabled:opacity-50"
           style={{ minHeight: 56 }}
         >
           <span>{status === "sending" ? "sending" : "send me my results"}</span>
@@ -316,7 +316,7 @@ function EmailScreen({
             →
           </span>
         </button>
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+        <p className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
           no spam. unsubscribe anytime.
         </p>
       </form>
@@ -348,10 +348,10 @@ function ResultScreen({
 
   return (
     <section>
-      <p className="rise rise-1 text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
+      <p className="rise rise-1 font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
         your diagnosis
       </p>
-      <h1 className="rise rise-2 mt-6 text-5xl font-bold leading-[0.95] tracking-tight text-accent sm:text-7xl">
+      <h1 className="rise rise-2 mt-6 text-5xl font-semibold leading-[0.95] tracking-[-0.04em] text-foreground sm:text-7xl">
         {r.name}
       </h1>
       <p
@@ -361,7 +361,7 @@ function ResultScreen({
         {r.headline}
       </p>
       {band && (
-        <p className="rise rise-3 mt-5 text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
+        <p className="rise rise-3 mt-5 font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
           depletion level: <span className="text-accent">{band.label}</span>
         </p>
       )}
@@ -392,18 +392,18 @@ function ResultScreen({
           </ul>
         </Block>
 
-        <div className="border border-accent bg-accent/5 p-6 sm:p-8">
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
+        <div className="rounded-md border border-border bg-card p-6 sm:p-8">
+          <p className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
             share this
           </p>
-          <p className="mt-4 text-2xl font-bold leading-tight tracking-tight text-foreground sm:text-3xl">
+          <p className="mt-4 text-2xl font-semibold leading-tight tracking-[-0.02em] text-foreground sm:text-3xl">
             {r.shareLine}
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
               type="button"
               onClick={copyShare}
-              className="cta group inline-flex items-center justify-center gap-3 bg-accent px-6 py-4 text-sm font-bold uppercase tracking-wider text-accent-foreground transition-colors hover:bg-accent/90"
+              className="cta group inline-flex items-center justify-center gap-3 bg-accent px-6 py-4 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent/90"
               style={{ minHeight: 48 }}
             >
               <span>{copied ? "copied" : "copy share line"}</span>
@@ -414,7 +414,7 @@ function ResultScreen({
             <button
               type="button"
               onClick={onRetake}
-              className="inline-flex items-center justify-center gap-3 border border-border px-6 py-4 text-sm font-bold uppercase tracking-wider text-foreground transition-colors hover:border-accent"
+              className="inline-flex items-center justify-center gap-3 rounded-full border border-border px-6 py-4 text-sm font-medium text-foreground transition-colors hover:border-foreground"
               style={{ minHeight: 48 }}
             >
               retake
@@ -422,7 +422,7 @@ function ResultScreen({
           </div>
         </div>
 
-        <p className="text-center text-xs uppercase tracking-[0.2em] text-muted-foreground">
+        <p className="text-center font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
           results also sent to your inbox
         </p>
       </div>
@@ -433,7 +433,7 @@ function ResultScreen({
 function Block({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <h2 className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
+      <h2 className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
         {label}
       </h2>
       <div className="mt-4">{children}</div>
