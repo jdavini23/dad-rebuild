@@ -69,15 +69,15 @@ function Landing() {
             className="rise rise-2 mt-8 max-w-4xl text-[2.25rem] font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
             style={{ textWrap: "balance" } as React.CSSProperties}
           >
-            you're three coffees deep, snapped at your kid before 8am, and don't recognize the guy in the mirror.
+            the Dad you want to be is still in there.
           </h1>
 
           <p className="rise rise-3 mt-8 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-            find your depletion type in 3 minutes.
+            find out which kind of depleted you are, and get a 14-day plan to start rebuilding. three minutes, eleven questions.
           </p>
 
           <div className="rise rise-4 mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-            <PrimaryCTA className="w-full sm:w-auto">start the diagnostic</PrimaryCTA>
+            <PrimaryCTA className="w-full sm:w-auto">show me what's draining me</PrimaryCTA>
             <span className="text-sm text-muted-foreground sm:ml-4">
               free. no app to download, no call to book.
             </span>
@@ -85,20 +85,40 @@ function Landing() {
         </div>
       </section>
 
-      {/* WHY THIS EXISTS */}
+      {/* WHAT YOU WALK AWAY WITH */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-5xl px-5 py-20 sm:px-8 sm:py-28">
           <h2 className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
-            why this exists
+            what you walk away with
           </h2>
 
-          <div className="mt-10 space-y-5 text-xl leading-snug text-foreground/90 sm:text-2xl">
-            <p>i built this because i needed it.</p>
-            <p className="text-accent">most dad advice is written for moms, or by people who've never been this specific kind of tired.</p>
-            <p>this is the thing i wish someone had handed me at 11pm, when i looked in the mirror and didn't know the guy looking back.</p>
-            <p>no journaling. no "fill your cup." no inner child work. just a diagnosis and a 14-day protocol you can run starting tomorrow morning.</p>
-            <p>no guru. no program. just a Dad who's been in the hole, handing you what helped him climb out.</p>
-          </div>
+          <p className="mt-6 max-w-2xl text-lg text-foreground/90 sm:text-xl">
+            in three minutes, you'll know what's actually draining you. that's more than most dads ever stop to find out.
+          </p>
+
+          <ul className="mt-10 grid gap-px bg-border sm:grid-cols-3">
+            {[
+              {
+                lead: "your depletion type.",
+                body: "one of four. the specific way you're getting worn down, named, so you can stop wondering what's wrong with you.",
+              },
+              {
+                lead: "the one mistake keeping you stuck.",
+                body: "the move your type makes on repeat that quietly keeps the tank empty.",
+              },
+              {
+                lead: "a 14-day rebuild.",
+                body: "three small daily things, built for your type. not \"sleep more, drink water.\" the actual first steps back.",
+              },
+            ].map((item, i) => (
+              <li key={i} className="bg-background p-7 sm:p-8">
+                <span className="block text-xl font-bold text-accent">→ 0{i + 1}</span>
+                <p className="mt-5 text-base leading-relaxed text-foreground/90">
+                  <span className="font-bold text-foreground">{item.lead}</span> {item.body}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -156,6 +176,22 @@ function Landing() {
         </div>
       </section>
 
+      {/* WHY THIS EXISTS */}
+      <section className="border-b border-border">
+        <div className="mx-auto max-w-5xl px-5 py-20 sm:px-8 sm:py-28">
+          <h2 className="text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
+            why this exists
+          </h2>
+
+          <div className="mt-10 space-y-5 text-xl leading-snug text-foreground/90 sm:text-2xl">
+            <p>i built this because i needed it.</p>
+            <p className="text-accent">most dad advice is written for moms, or by people who've never been this specific kind of tired.</p>
+            <p>this is the thing i wish someone had handed me at 11pm, when i looked in the mirror and didn't know the guy looking back.</p>
+            <p>no guru. no program. just a Dad who's been in the hole, handing you what helped him climb out.</p>
+          </div>
+        </div>
+      </section>
+
       {/* FINAL CTA */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-5xl px-5 py-24 text-center sm:px-8 sm:py-32">
@@ -195,7 +231,7 @@ function StickyMobileBar() {
           className="cta group flex w-full items-center justify-center gap-3 bg-accent px-6 py-4 text-sm font-bold uppercase tracking-wider text-accent-foreground transition-colors hover:bg-accent/90"
           style={{ minHeight: 48 }}
         >
-          <span>start the diagnostic</span>
+          <span>show me what's draining me</span>
           <span aria-hidden="true" className="cta-arrow">→</span>
         </a>
       </div>
