@@ -56,9 +56,6 @@ function Landing() {
           <span className="font-mono text-sm font-medium tracking-tight text-foreground">
             WDAY<span className="text-muted-foreground">.</span>
           </span>
-          <span className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
-            v.01
-          </span>
         </div>
       </header>
 
