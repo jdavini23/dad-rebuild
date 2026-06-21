@@ -185,7 +185,7 @@ function Landing() {
 
           <div className="mt-10 max-w-3xl space-y-5 text-xl leading-snug text-foreground sm:text-2xl">
             <p>i built this because i needed it.</p>
-            <p className="text-muted-foreground">most dad advice is written for moms, or by people who've never been this specific kind of tired.</p>
+            <p className="border-l-2 border-foreground pl-5 font-medium text-foreground">most dad advice is written for moms, or by people who've never been this specific kind of tired.</p>
             <p>this is the thing i wish someone had handed me at 11pm, when i looked in the mirror and didn't know the guy looking back.</p>
             <p>no guru. no program. just a Dad who's been in the hole, handing you what helped him climb out.</p>
           </div>
