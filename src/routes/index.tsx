@@ -3,16 +3,16 @@ import { createFileRoute } from "@tanstack/react-router";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "The Depleted Dad Diagnostic — find your depletion type in 3 minutes" },
+      { title: "Which Dad Are You — find your dad type in 3 minutes" },
       {
         name: "description",
         content:
-          "free 3-minute quiz that identifies which of 4 depletion types is bleeding you out, then delivers a 14-day rebuild protocol to your inbox.",
+          "free 3-minute quiz that shows which kind of dad you are right now, then delivers a 14-day rebuild protocol to your inbox.",
       },
-      { property: "og:title", content: "The Depleted Dad Diagnostic" },
+      { property: "og:title", content: "Which Dad Are You" },
       {
         property: "og:description",
-        content: "find your depletion type in 3 minutes. get a 14-day rebuild protocol.",
+        content: "find out which dad you are in 3 minutes. get a 14-day rebuild protocol.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "/" },
@@ -54,7 +54,7 @@ function Landing() {
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-5 sm:px-8">
           <span className="font-mono text-sm font-medium tracking-tight text-foreground">
-            DDD<span className="text-muted-foreground">.</span>
+            WDAY<span className="text-muted-foreground">.</span>
           </span>
           <span className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">
             v.01
@@ -70,7 +70,7 @@ function Landing() {
         />
         <div className="relative z-10 mx-auto max-w-5xl px-5 pb-24 pt-16 sm:px-8 sm:pb-32 sm:pt-24">
           <div className="rise rise-1">
-            <Eyebrow>the depleted dad diagnostic</Eyebrow>
+            <Eyebrow>which dad are you</Eyebrow>
           </div>
 
           <h1

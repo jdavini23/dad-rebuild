@@ -16,7 +16,7 @@ import {
 export const Route = createFileRoute("/quiz")({
   head: () => ({
     meta: [
-      { title: "take the diagnostic — depleted dad diagnostic" },
+      { title: "take the quiz — which dad are you" },
       {
         name: "description",
         content: "eleven questions. 3 minutes. find your depletion type.",
@@ -181,7 +181,7 @@ function QuizHeader({
           className="font-mono text-xs uppercase tracking-[0.12em] text-foreground"
           aria-label="back to home"
         >
-          DDD<span className="text-accent">.</span>
+          WDAY<span className="text-accent">.</span>
         </Link>
         <span className="font-mono text-xs uppercase tracking-[0.12em] text-muted-foreground">{label}</span>
       </div>
